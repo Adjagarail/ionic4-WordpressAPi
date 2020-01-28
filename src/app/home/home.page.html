@@ -8,30 +8,39 @@
 
 <ion-content class="ion-padding ion-text-center">
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
+    <ion-refresher-content refreshing-spinner="bubbles" refreshing-text="Actualisation..."></ion-refresher-content>
   </ion-refresher>
 
-  <ion-list class="post-list">
 
-    <ion-item *ngFor="let item of items" (click)="goToPostDetails(item)">
+    <ion-card *ngFor="let item of items" (click)="goToPostDetail(item)">
+      <ion-card-header>
+          <ion-card-subtitle [innerHTML]="item.title.rendered"></ion-card-subtitle>
+          <br>
+                  <img *ngIf="item.featured_image_urls && item.featured_image_urls.thumbnail"
+                    src="{{item.featured_image_urls.thumbnail}}" />
+                  <img *ngIf="!item.featured_image_urls || !item.featured_image_urls.thumbnail" src="assets/default.png" />
+      </ion-card-header>
+<ion-card-content>
+  <p [innerHTML]="item.excerpt.rendered"></p>
+</ion-card-content>
+<ion-row class="ion-no-padding">
+  <ion-col class="ion-text-right">
+    <button ion-button clear small color="primary" icon-start>
+      {{item.date.split('T')[0]}}
+    </button>
+  </ion-col>
+  <ion-col class="ion-text-right">
+    <button ion-button small color="primary" (click)="goToPostDetail()" icon-start>
+      Lire la suite
+    </button>
+  </ion-col>
+</ion-row>
 
-      <ion-avatar item-left *ngIf="item.featured_image_urls">
-        <img *ngIf="item.featured_image_urls && item.featured_image_urls.thumbnail"
-          src="{{item.featured_image_urls.thumbnail}}">
-        <img *ngIf="!item.featured_image_urls || !item.featured_image_urls.thumbnail" src="assets/default.png">
-      </ion-avatar>
-      <div>
-        <h2 *ngIf="item.title && item.title.rendered" [innerHTML]="item.title.rendered"></h2>
-
-        <p *ngIf="item.excerpt && item.excerpt.rendered" [innerHTML]="item.excerpt.rendered"></p>
-      </div>
-
-    </ion-item>
-
-  </ion-list>
+    </ion-card>
 
   <ion-infinite-scroll (ionInfinite)="loadMore($event)">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    <ion-infinite-scroll-content loadingSpinner="bubbles"
+      loadingText = " Chargement en cours ...">
+    </ion-infinite-scroll-content>
   </ion-infinite-scroll>
-
 </ion-content>

@@ -10,7 +10,7 @@ import { map } from "rxjs/operators";
 })
 export class PostDetailPage implements OnInit {
   data;
-  url: string = "https://www.gainde2000.sn/";
+  url: string = "http://lataniere.gainde2000.sn/";
   constructor(
     private route: ActivatedRoute,
     private router: Router,
